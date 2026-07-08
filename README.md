@@ -29,6 +29,8 @@ The regressor was evaluated on a comprehensive test split, demonstrating robust 
 
 > **Note:** The extremely high $R^2$ score reflects the deterministic nature of the synthesized physiological formula combined with the linear alignment of NHANES anthropometric baselines.
 
+---
+
 ## 📁 Repository Structure
 
 ```text
@@ -42,7 +44,6 @@ The regressor was evaluated on a comprehensive test split, demonstrating robust 
 │   └── train.py
 ├── README.md                  # Project documentation
 └── requirements.txt           # Dependency management
-
 
 ## 📊 Dataset Methodology
 

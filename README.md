@@ -52,7 +52,3 @@ The regressor was evaluated on a comprehensive test split, demonstrating robust 
 ## 📊 Dataset Methodology
 
 This project leverages real-world anthropometric and biochemical baselines from the NHANES (National Health and Nutrition Examination Survey) dataset. To enable personalized modeling, synthetic Genetic Influences and targeted Protein Requirements were engineered into the pipeline based on established epidemiological distributions and published clinical nutrition guidelines.
-
-```
-
-```

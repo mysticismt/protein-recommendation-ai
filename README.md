@@ -138,7 +138,7 @@ This approach preserves relationships between real-world measurements while expa
 
 1. **Clone the repository:**
 ```bash
-git clone [https://github.com/yourusername/protein-recommendation-ai.git](https://github.com/yourusername/protein-recommendation-ai.git)
+git clone [https://github.com/mysticismt/protein-recommendation-ai.git](https://github.com/mysticismt/protein-recommendation-ai.git)
 cd protein-recommendation-ai
 
 ```

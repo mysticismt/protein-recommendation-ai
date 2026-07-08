@@ -117,6 +117,7 @@ This approach preserves relationships between real-world measurements while expa
 ```text
 ├── data/
 │   ├── raw/                 # Original NHANES datasets
+│   ├── interim/             # Primary NHANES datasets
 │   └── processed/           # Cleaned and engineered datasets
 ├── notebooks/
 │   ├── 01_data_collection_preprocessing.ipynb

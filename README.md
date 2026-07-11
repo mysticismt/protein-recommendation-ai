@@ -122,7 +122,13 @@ This approach preserves relationships between real-world measurements while expa
 ├── notebooks/
 │   ├── 01_data_collection_preprocessing.ipynb
 │   └── 02_machine_learning_regression.ipynb
+├── reports/figures/
+│   ├── 01_target_distribution.png
+│   ├── 02_weight_vs_protein.png
+│   ├── 03_correlation_matrix.png
+│   └── eda_analysis.ipynb
 ├── src/
+│   ├── linear_regression.ipynb
 │   ├── preprocessing.py
 │   ├── feature_engineering.py
 │   └── train.py

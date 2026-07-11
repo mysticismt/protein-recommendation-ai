@@ -126,6 +126,8 @@ This approach preserves relationships between real-world measurements while expa
 │   ├── 01_target_distribution.png
 │   ├── 02_weight_vs_protein.png
 │   ├── 03_correlation_matrix.png
+│   ├── 04_model_comparison.png
+│   ├── 05_nn_loss_curve.png
 │   └── eda_analysis.ipynb
 ├── src/
 │   ├── linear_regression.ipynb

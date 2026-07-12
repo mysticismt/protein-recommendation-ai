@@ -120,8 +120,8 @@ This approach preserves relationships between real-world measurements while expa
 │   ├── interim/             # Primary NHANES datasets
 │   └── processed/           # Cleaned and engineered datasets
 ├── notebooks/
-│   ├── Data collection and preparation 00.ipynb
-│   ├── Multiple Linear Regression (Protein Recommendation AI) 01.ipynb
+│   ├── Data collection and preparation.ipynb
+│   ├── Multiple Linear Regression (Protein Recommendation AI).ipynb
 │   ├── model_comparison.ipynb
 │   ├── Neural Networks and Deep Learning.ipynb
 │   └── All In One.ipynb

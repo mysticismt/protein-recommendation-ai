@@ -123,7 +123,7 @@ This approach preserves relationships between real-world measurements while expa
 │   ├── Data collection and preparation.ipynb
 │   ├── Multiple Linear Regression.ipynb
 │   ├── model_comparison.ipynb                     # Linear Regression , Ridge Regression , Random Forest , XGBoost , CatBoost
-                                                   Polynomial Regression , Support Vector Regression , K-Nearest Neighbors (KNN)
+│   ├──                                            Polynomial Regression , Support Vector Regression , K-Nearest Neighbors (KNN)
 │   ├── Neural Networks and Deep Learning.ipynb
 │   └── All In One.ipynb
 ├── reports/figures/

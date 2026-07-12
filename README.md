@@ -121,7 +121,7 @@ This approach preserves relationships between real-world measurements while expa
 │   └── processed/           # Cleaned and engineered datasets
 ├── notebooks/
 │   ├── Data collection and preparation.ipynb
-│   ├── Multiple Linear Regression (Protein Recommendation AI).ipynb
+│   ├── Multiple Linear Regression.ipynb
 │   ├── model_comparison.ipynb                     # Linear Regression , Ridge Regression , Random Forest , XGBoost , CatBoost
                                                    Polynomial Regression , Support Vector Regression , K-Nearest Neighbors (KNN)
 │   ├── Neural Networks and Deep Learning.ipynb

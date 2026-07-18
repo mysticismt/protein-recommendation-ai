@@ -168,6 +168,7 @@ This approach preserves relationships between real-world measurements while expa
 │   ├── 03_correlation_matrix.png
 │   ├── 04_model_comparison.png
 │   ├── 05_nn_loss_curve.png
+│   ├── 06_supplement_confusion_matrix.png
 │   └── eda_analysis.ipynb
 ├── reports/shap/
 │   ├── shap_summary.png
@@ -179,7 +180,8 @@ This approach preserves relationships between real-world measurements while expa
 │   └── train.py
 ├── models/
 │   ├── 04_model_comparison.png
-│   └── trained_model.pkl
+│   ├── trained_model.pkl
+│   └── trained_supplement_classifier.pkl
 ├── requirements.txt
 └── README.md
 

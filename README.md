@@ -71,7 +71,42 @@ Protein Requirement Prediction
 
 ---
 
-## 📊 Model Performance
+## 📊 Model Performance & Explainable AI (SHAP) Report
+
+This report outlines the performance comparison between our baseline and advanced machine learning models, followed by an in-depth interpretability analysis using SHAP values.
+
+---
+
+### 🤖 Model Performance Comparison
+
+To predict the exact daily protein requirement (`Protein_Requirement_g`), we evaluated multiple architectures. The advanced ensemble tree model significantly outperformed the linear baseline by capturing non-linear biological interactions.
+
+| Model Architecture | R² Score | Mean Absolute Error (MAE) | Status |
+| :--- | :---: | :---: | :---: |
+| **Multiple Linear Regression** | 0.9815 | 1.506 g | Baseline |
+| **Random Forest Regressor** | **0.9953** | **0.398 g** | **Top Performer** |
+| **XGBoost Regressor** | 0.9951 | 0.412 g | Production Ready |
+
+### Key Insight:
+The **Random Forest** and **XGBoost** models achieved an exceptionally low MAE (~0.4g), meaning the system can predict an individual's protein needs with sub-gram accuracy based purely on their physiological profile.
+
+---
+
+### 🔍 SHAP Explainability & Global Feature Importance
+
+Using Explainable AI (XAI) via **SHAP (SHapley Additive exPlanations)**, we opened the "black box" of our top-performing model. The global feature importance ranking discovered by the model is as follows:
+
+1. **`Lean_Mass_kg` (66.2%)**: The absolute driving factor. The model accurately locked onto the fact that active muscle tissue is the primary consumer of dietary amino acids.
+2. **`Activity_Score` (27.2%)**: Metabolic rate acceleration due to physical activity acts as the second major booster for protein requirements.
+3. **`Weight_kg` (6.0%)**: Represents the overall biological mass baseline.
+4. **Other Features (`BMI`, `Genetic_Score`, `Age` < 1%)**: Serve as micro-adjusters to fine-tune the final recommendation based on age-related decline or specific metabolic profiles.
+
+*The generated plot `reports/shap/shap_summary.png` visually demonstrates how higher feature values (e.g., high Lean Mass) push the SHAP values in the positive direction.*
+
+---
+
+### 🧬 Smart Supplement Recommendation Engine
+To evolve this project from a regression model into an **AI Product**, we introduced the `Recommended_Supplement_Type` feature. This maps individuals to specific protein types (`Whey_Isolate`, `Whey_Concentrate`, `Casein`, `Plant_Protein`) based on their BMI, body fat percentage, and activity levels. This column will serve as the target for our upcoming recommendation agent.
 
 The regression model was evaluated on a separated test dataset.
 

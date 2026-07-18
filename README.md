@@ -161,6 +161,7 @@ This approach preserves relationships between real-world measurements while expa
 │   ├──                                            Polynomial Regression , Support Vector Regression , K-Nearest Neighbors (KNN)
 │   ├── Neural Networks and Deep Learning.ipynb
 │   ├── Explainable AI (SHAP).ipynb
+│   ├── Supplement Classification Model.ipynb
 │   └── All In One.ipynb
 ├── reports/figures/
 │   ├── 01_target_distribution.png

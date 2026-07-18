@@ -139,6 +139,7 @@ This approach preserves relationships between real-world measurements while expa
 │   ├── feature_engineering.py
 │   └── train.py
 ├── models/
+│   ├── 04_model_comparison.png
 │   └── trained_model.pkl
 ├── requirements.txt
 └── README.md

@@ -125,6 +125,7 @@ This approach preserves relationships between real-world measurements while expa
 │   ├── model_comparison.ipynb                     # Linear Regression , Ridge Regression , Random Forest , XGBoost , CatBoost
 │   ├──                                            Polynomial Regression , Support Vector Regression , K-Nearest Neighbors (KNN)
 │   ├── Neural Networks and Deep Learning.ipynb
+│   ├── Explainable AI (SHAP).ipynb
 │   └── All In One.ipynb
 ├── reports/figures/
 │   ├── 01_target_distribution.png
@@ -133,6 +134,9 @@ This approach preserves relationships between real-world measurements while expa
 │   ├── 04_model_comparison.png
 │   ├── 05_nn_loss_curve.png
 │   └── eda_analysis.ipynb
+├── reports/shap/
+│   ├── shap_summary.png
+│   └── shap_waterfall.png
 ├── src/
 │   ├── linear_regression.ipynb
 │   ├── preprocessing.py

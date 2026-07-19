@@ -176,12 +176,16 @@ This approach preserves relationships between real-world measurements while expa
 │   └── shap_waterfall.png
 ├── src/
 │   ├── linear_regression.ipynb
+│   ├── inference_pipeline.ipynb
+│   ├── Machine_Learning_Models.ipynb
 │   ├── preprocessing.py
 │   ├── feature_engineering.py
-│   └── train.py
+│   └── train.ipynb
 ├── models/
 │   ├── 04_model_comparison.png
 │   ├── trained_model.pkl
+│   ├── multiple_linear_regression_model.pkl
+│   ├── random_forest_protein_model.pkl
 │   └── trained_supplement_classifier.pkl
 ├── requirements.txt
 └── README.md

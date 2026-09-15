@@ -65,7 +65,9 @@ class GroundedNutritionAgent:
     def __init__(self, model_name: str = OLLAMA_MODEL, retriever: Optional[HybridRetriever] = None):
         self.model_name = model_name
         self.retriever = retriever or HybridRetriever()
-        self.llm = build_llm_provider()
+        # Do not instantiate an LLM provider during normal RAG construction.
+        # This keeps retrieval fully usable without Ollama/Qwen or any API key.
+        self.llm = None
 
     def answer(self, user_profile: Dict[str, Any], ml_results: Dict[str, Any], shap_summary: Optional[Dict[str, float]] = None, question: str = "") -> Dict[str, Any]:
         profile = normalize_profile(user_profile)
@@ -76,6 +78,8 @@ class GroundedNutritionAgent:
         docs = self.retriever.retrieve(retrieval_query)
         facts = build_legacy_facts(profile, ml_results, shap_summary)
         prompt = f"USER PROFILE\n{json.dumps(profile, ensure_ascii=False, indent=2, default=str)}\n\nLEGACY FACTS\n{json.dumps(facts, ensure_ascii=False, indent=2, default=str)}\n\nSAFETY FLAGS\n{json.dumps(safety_profile['flags'], ensure_ascii=False)}\n\nUSER QUESTION\n{question}\n\nRETRIEVED EVIDENCE\n{_evidence_block(docs)}\n\nRECOMMENDATION POLICY\n{json.dumps(policy, ensure_ascii=False, indent=2)}"
+        if self.llm is None:
+            self.llm = build_llm_provider()
         content = self.llm.chat(self.model_name, [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": prompt}])
         graded = grade_documents(docs)
         audit = audit_generation(content, [str(x["source_id"]).upper() for x in graded], profile, policy)

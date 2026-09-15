@@ -5,10 +5,11 @@ from typing import Any, Dict, Optional
 import joblib
 import numpy as np
 import pandas as pd
+import shap
 
 
 class LegacyProjectAdapter:
-    """Read-only adapter around the existing legacy dataset and trained models."""
+    """Read-only adapter around the existing legacy dataset, models, and RF SHAP behavior."""
     REGRESSOR_FEATURES = ["Age", "Is_Male", "Weight_kg", "Height_cm", "BMI", "Body_Fat_Percent", "Lean_Mass_kg", "Activity_Score", "Daily_Protein_Intake_g", "Genetic_Score"]
     CLASSIFIER_FEATURES = ["Age", "Gender_Encoded", "Weight_kg", "Height_cm", "BMI", "Body_Fat_Percent", "Lean_Mass_kg", "Activity_Score", "Genetic_Score"]
 
@@ -33,6 +34,13 @@ class LegacyProjectAdapter:
         ml = {"model": "RandomForestRegressor", "Daily_Protein_Requirement_g": pred, "Daily_Protein_Requirement_g_per_kg": pred / weight, "Daily_Protein_Intake_g": intake, "Daily_Protein_Intake_g_per_kg": intake / weight, "Intake_Gap_g": pred - intake, "Recommended_Supplement": supplement, "dataset_target_Protein_Requirement_g": float(row["Protein_Requirement_g"])}
         if hasattr(self.classifier, "predict_proba"):
             ml["Supplement_Probabilities"] = {str(c): float(p) for c, p in zip(self.classifier.classes_, self.classifier.predict_proba(XC)[0])}
+        try:
+            values = shap.TreeExplainer(self.regressor)(X).values
+            values = np.asarray(values).reshape(-1)
+            order = np.argsort(np.abs(values))[::-1][:shap_top_k]
+            shap_summary = {self.REGRESSOR_FEATURES[i]: float(values[i]) for i in order}
+        except Exception:
+            shap_summary = {}
         profile = {k: row[k] for k in ["ID", "Age", "Gender", "Weight_kg", "Height_cm", "BMI", "Body_Fat_Percent", "Lean_Mass_kg", "Activity_Level", "Activity_Score", "Daily_Protein_Intake_g", "Genetic_Score"] if k in row.index}
         profile["Is_Male"] = int(row["Is_Male"])
-        return {"profile": profile, "ml_results": ml, "shap_summary": {}}
+        return {"profile": profile, "ml_results": ml, "shap_summary": shap_summary}

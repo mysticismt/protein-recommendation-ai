@@ -16,24 +16,77 @@ class ProteinRecommendationPipeline:
         self.legacy = LegacyProjectAdapter()
         self.agent = GroundedNutritionAgent()
 
-    def run(self, row_id: float, question: str, shap_top_k: int = 10, generate: bool = True) -> Dict[str, Any]:
-        case = self.legacy.build_real_case(row_id=row_id, shap_top_k=shap_top_k)
-        profile, ml_results, shap_summary = case["profile"], case["ml_results"], case["shap_summary"]
+    def run(
+        self,
+        row_id: float,
+        question: str,
+        shap_top_k: int = 10,
+        generate: bool = False,
+    ) -> Dict[str, Any]:
+        case = self.legacy.build_real_case(
+            row_id=row_id,
+            shap_top_k=shap_top_k,
+        )
+
+        profile = case["profile"]
+        ml_results = case["ml_results"]
+        shap_summary = case["shap_summary"]
+
         safety_flags = detect_safety_flags(profile, question)
-        retrieval_query = build_evidence_query(question, profile, ml_results, shap_summary)
+
+        retrieval_query = build_evidence_query(
+            question,
+            profile,
+            ml_results,
+            shap_summary,
+        )
+
         retrieved = self.agent.retriever.retrieve(retrieval_query)
-        decision = build_decision(profile, question, safety_flags, retrieved)
-        generated = self.agent.answer(question=question, user_profile=profile, ml_results=ml_results, shap_summary=shap_summary) if generate else None
-        warnings = validate_numeric_integrity({"profile": profile, "legacy_ml": ml_results})
+
+        decision = build_decision(
+            profile,
+            question,
+            safety_flags,
+            retrieved,
+        )
+
+        # LLM generation is optional. The default path is fully usable without
+        # Ollama, Qwen, or any other model provider.
+        generated = None
+        if generate:
+            generated = self.agent.answer(
+                question=question,
+                user_profile=profile,
+                ml_results=ml_results,
+                shap_summary=shap_summary,
+            )
+
+        validation_input = {
+            "profile": profile,
+            "legacy_ml": ml_results,
+        }
+        numeric_warnings = validate_numeric_integrity(validation_input)
+        numeric_integrity = "PASS" if not numeric_warnings else {
+            "passed": False,
+            "warnings": numeric_warnings,
+        }
+
         contract = {
             "schema_version": "1.0",
             "generated_at_utc": datetime.now(timezone.utc).isoformat(),
             "case": profile,
             "legacy_ml": ml_results,
             "shap": shap_summary,
-            "retrieval": {"query": retrieval_query, "sources": generated.get("retrieved", []) if generated else retrieved},
+            "retrieval": {
+                "query": retrieval_query,
+                "sources": generated.get("retrieved", []) if generated else retrieved,
+            },
             "decision": decision,
-            "answer": generated.get("answer", "") if generated else "Generation skipped (generate=false). The deterministic ML/RAG contract is still returned.",
-            "audits": {"numeric_integrity": "PASS" if not warnings else {"passed": False, "warnings": warnings}, "generation_audit": generated.get("generation_audit") if generated else None},
+            "answer": generated.get("answer", "") if generated else "Generation skipped (generate=false). The deterministic ML/RAG contract is returned without an LLM.",
+            "audits": {
+                "numeric_integrity": numeric_integrity,
+                "generation_audit": generated.get("generation_audit") if generated else None,
+            },
         }
+
         return contract

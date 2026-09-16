@@ -265,3 +265,81 @@ print(f"Estimated daily protein requirement: {prediction} grams")
 ## 📌 Conclusion
 
 This project demonstrates how machine learning can combine population-level health data, physiological feature engineering, and predictive modeling to estimate personalized nutrition requirements. It provides a foundation for future integration of genomic information and AI-powered personalized nutrition systems.
+
+---
+
+# 🧪 RAG-Based Scientific Nutrition Assistant
+
+The project now includes an isolated `Protein_RAG/` layer that sits on top of the existing legacy ML + SHAP pipeline. The legacy project files, targets, features, trained models, supplement classifier, and existing SHAP implementation are not modified by the RAG integration.
+
+### Architecture
+
+```text
+Existing NHANES + Legacy ML
+          ↓
+   Legacy RF prediction
+          ↓
+      Legacy SHAP
+          ↓
+     Protein_RAG
+   ┌───────────────┐
+   │ Safety /      │
+   │ Policy        │
+   └──────┬────────┘
+          ↓
+   Hybrid Retrieval
+   (Dense + BM25)
+          ↓
+ Scientific evidence
+          ↓
+ Grounded generation
+```
+
+### Reproducible RAG setup
+
+From the repository root:
+
+```bash
+pip install -r Protein_RAG/requirements-rag.txt
+python -m Protein_RAG.scripts.build_rag_index
+```
+
+The index is built from the curated scientific corpus under `data/rag_corpus/`. The generated Chroma/BM25 artifacts are local runtime artifacts and can be rebuilt rather than being treated as part of the legacy model files.
+
+### Running the API
+
+```bash
+python -m Protein_RAG.scripts.serve_api
+```
+
+Then open `http://127.0.0.1:8000/docs`.
+
+The API exposes `GET /health`, `GET /info`, and `POST /recommend`.
+
+### LLM provider options
+
+The RAG generation layer is provider-agnostic and keeps the existing Ollama/Qwen path as the default while allowing an OpenAI-compatible hosted endpoint without installing a local model runtime.
+
+Local mode:
+
+```text
+RAG_LLM_PROVIDER=ollama
+OLLAMA_MODEL=qwen3.5
+```
+
+Hosted/API mode:
+
+```text
+RAG_LLM_PROVIDER=openai_compatible
+RAG_LLM_BASE_URL=https://YOUR_PROVIDER.example/v1
+RAG_LLM_API_KEY=YOUR_TOKEN
+RAG_LLM_MODEL=YOUR_MODEL_NAME
+```
+
+The hosted provider implementation uses Python's standard library HTTP client, so no Ollama installation is required for that mode.
+
+To run the deterministic ML + SHAP + retrieval contract without any LLM at all, send `generate=false` to `POST /recommend`.
+
+### Important scope note
+
+The RAG layer is a research prototype. Retrieved literature is evidence for interpretation and grounding, not a replacement for clinical assessment. The legacy protein target is engineered from the project dataset and is not independent clinical ground truth.
